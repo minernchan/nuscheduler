@@ -1,0 +1,15 @@
+{% extends "homepage/header.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <p><h1>Please Sign In</h1></p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Sign In</button>
+    </form>
+
+<!--{% include "homepage/includes/htmlsnippet.html" %}-->
+</div>
+{% endblock %}
