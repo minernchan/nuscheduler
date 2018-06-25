@@ -1,0 +1,7 @@
+{% extends "homepage/header.html" %}
+
+{% block content %}
+    <h3>{{updatepost.title}}</h3>
+    <h6>on {{updatepost.date}}</h6>
+    {{updatepost.body|safe|linebreaks}}
+{% endblock %}
