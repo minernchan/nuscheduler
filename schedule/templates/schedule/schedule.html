@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1>Schedules</h1>
+
+    {% for schedule_post in schedule_posts %}
+        <h1><a href="/schedule/{{schedule_post.id}}">{{ schedule_post.title }}</a></h1> 
+        {% if schedule_post.image %}
+        <img src="{{ schedule_post.image.url }}" width="750"> 
+        {% endif %}
+        <h6>Posted by {{ schedule_post.user.get_full_name }} on {{ schedule_post.created }}</h6>    
+        
+    {% endfor %}
+</div>
+{% endblock %}
+
+<a href="/updates/{{post.id}}"> {{post.title}}</a>

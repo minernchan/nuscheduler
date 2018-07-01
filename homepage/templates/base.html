@@ -27,6 +27,7 @@
 	{% if user.is_authenticated %}
     <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
         <ul class="navbar-nav ml-auto">
+			<li class="nav-item"><button type="button" class="btn btn-danger"><a href="/schedule/submit/" style="color:#f6f6f6">Share your schedule</a></button></li>
 			<li class="nav-item"><a class="nav-link" href="{% url 'view_profile' %}">Profile</a></li>
 			<li class="nav-item"><a class="nav-link" href="/logout/">Logout</a></li>
         </ul>
@@ -48,19 +49,19 @@
 	<div class="container-fluid" style="min-height:95%;">
 		<!--Sidebar-->
 		<div class="row">
-			<div class="col-sm-1">
-				<br>
+			<div class="col-1 px-1 bg-light position-fixed" id="sticky-sidebar">
+		
 				<div class="well bs-sidebar" id="sidebar" style="background-color:#fff">
 					<ul class="nav nav-tabs flex-column">
 						<li><a href="/">Home</a></li>
-						<li><a href="/schedules/">Schedules</a></li>
+						<li><a href="/schedule/">Schedules</a></li>
 						<li><a href="/updates/">Updates</a></li>
 					</ul>
 				</div>
 			</div>
 
 			<!--Content-->
-			<div class="col-sm-11">
+			<div class="col offset-1">
 				<div class="container-fluid">
 					<br><br>
 						{% block content %}
