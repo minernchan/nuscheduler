@@ -1,4 +1,4 @@
-{% extends "homepage/header.html" %}
+{% extends "base.html" %}
 
 {% block content %}
 <div class="container-fluid">
@@ -7,8 +7,11 @@
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Sign In</button>
+        <button type="submit" class="btn btn-primary">Sign In</button>
     </form>
+    <br>
+    <button type="button" class="btn btn-danger"><a href="/reset-password/" style="color:#f6f6f6">Forgot Password?</a></button>
+
 
 <!--{% include "homepage/includes/htmlsnippet.html" %}-->
 </div>

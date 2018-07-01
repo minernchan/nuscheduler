@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1>{{schedulepost.title}}</h1>
+    {% if schedulepost.image %}
+        <img src="{{ schedulepost.image.url }}" width="1000"> 
+        <br>
+    {% endif %}
+    <br>
+    <h4>Course: {{ schedulepost.course_name }}</h4>
+    <br>
+    <h4>Modules Taken: {{ schedulepost.modules_taken }}</h4>
+    <br>
+    <h4>Description:</h4>
+    <p>{{ schedulepost.desc }}</p>
+    <br>
+    <h6>Posted by {{ schedulepost.user.get_full_name }} on {{ schedulepost.created }}</h6>    
+        
+</div>
+{% endblock %}
+
+
+    
