@@ -5,9 +5,30 @@ from nocaptcha_recaptcha.fields import NoReCaptchaField
 from django.core.exceptions import ValidationError
 
 class RegistrationForm(UserCreationForm):
-    email = forms.EmailField(required=True)
-    first_name = forms.CharField(required=True)
-    last_name = forms.CharField(required=True)
+    
+    email = forms.EmailField(widget=forms.EmailInput(
+        attrs={
+            'class':'form-control',
+            'placeholder': 'Enter your email...',
+            'style': 'width: 300px',
+        }),
+        required=True)
+
+    first_name = forms.CharField(widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+            'placeholder': 'Enter your first name...',
+            'style': 'width: 300px',
+        }),
+        required=True)
+    
+    last_name = forms.CharField(widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+            'placeholder': 'Enter your last name...',
+            'style': 'width: 300px',
+        }),
+        required=True)
     captcha = NoReCaptchaField()
 
     class Meta: #Metadata
@@ -33,6 +54,23 @@ class RegistrationForm(UserCreationForm):
         return user
 
 class EditProfileForm(UserChangeForm):
+    email = forms.EmailField(widget=forms.EmailInput(
+        attrs={
+            'class':'form-control',
+            'style': 'width:300px',
+        }),required=True)
+    
+    first_name = forms.CharField(widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+            'style':'width:300px',
+        }), required=True)
+
+    last_name = forms.CharField(widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+            'style':'width:300px',
+        }), required=True)
 
     class Meta:
         model = User
