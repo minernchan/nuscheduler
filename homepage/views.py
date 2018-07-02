@@ -6,7 +6,7 @@ from django.contrib.auth import update_session_auth_hash # to make sure user is 
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView
 from schedule.models import SchedulePost
-
+from django.contrib import messages
 # Create your views here.
 def index(request):
     return render(request, 'homepage/home.html')
@@ -17,6 +17,7 @@ def register(request):
         if form.is_valid: #all the fields are validated
             form.save() #creates user and save data in database
             return redirect('/register/complete')
+
     else: #requesting for the blank form to fill in
         form = RegistrationForm()
 

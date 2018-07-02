@@ -31,6 +31,8 @@ class RegistrationForm(UserCreationForm):
         required=True)
     captcha = NoReCaptchaField()
 
+    
+
     class Meta: #Metadata
         model = User #Model that is used to submit the data
         fields = (
@@ -42,6 +44,13 @@ class RegistrationForm(UserCreationForm):
             'password2',
         )
     
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        username = self.cleaned_data.get('username')
+        if email and User.objects.filter(email=email).exclude(username=username).exists():
+            raise forms.ValidationError('Email addresses must be unique.')
+        return email
+
     def save(self, commit=True): #commit means can save to database
         user = super(RegistrationForm, self).save(commit=False) # don't save it yet because not done editing the data for the model
         user.first_name = self.cleaned_data['first_name']

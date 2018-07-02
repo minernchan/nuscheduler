@@ -19,10 +19,13 @@ class ScheduleView(TemplateView):
 
 class ScheduleFormView(TemplateView):
     template_name = 'schedule/schedule_submit.html'
-
+    
     def get(self, request):
-        form = ScheduleForm()
-        
+        if request.user.is_authenticated:
+            form = ScheduleForm()
+        else:
+            messages.error(request, "You are not logged in!")
+            return redirect('schedule')
         args = {'form':form,}
         return render(request, self.template_name, args)
 
@@ -77,7 +80,7 @@ def delete_schedule_post(request, pk):
     if schedule_post.user == request.user:
         schedule_post.delete()
         messages.success(request, "Post Successfully Deleted!")
-        return redirect('view_schedule', pk)
+        return redirect('schedule')
     else:
         messages.error(request, "You are not authorized to do that!")
         return redirect('view_schedule', pk)
