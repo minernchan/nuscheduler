@@ -5,10 +5,33 @@ from nocaptcha_recaptcha.fields import NoReCaptchaField
 from django.core.exceptions import ValidationError
 
 class RegistrationForm(UserCreationForm):
-    email = forms.EmailField(required=True)
-    first_name = forms.CharField(required=True)
-    last_name = forms.CharField(required=True)
+    
+    email = forms.EmailField(widget=forms.EmailInput(
+        attrs={
+            'class':'form-control',
+            'placeholder': 'Enter your email...',
+            'style': 'width: 300px',
+        }),
+        required=True)
+
+    first_name = forms.CharField(widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+            'placeholder': 'Enter your first name...',
+            'style': 'width: 300px',
+        }),
+        required=True)
+    
+    last_name = forms.CharField(widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+            'placeholder': 'Enter your last name...',
+            'style': 'width: 300px',
+        }),
+        required=True)
     captcha = NoReCaptchaField()
+
+    
 
     class Meta: #Metadata
         model = User #Model that is used to submit the data
@@ -21,6 +44,13 @@ class RegistrationForm(UserCreationForm):
             'password2',
         )
     
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        username = self.cleaned_data.get('username')
+        if email and User.objects.filter(email=email).exclude(username=username).exists():
+            raise forms.ValidationError('Email addresses must be unique.')
+        return email
+
     def save(self, commit=True): #commit means can save to database
         user = super(RegistrationForm, self).save(commit=False) # don't save it yet because not done editing the data for the model
         user.first_name = self.cleaned_data['first_name']
@@ -33,6 +63,23 @@ class RegistrationForm(UserCreationForm):
         return user
 
 class EditProfileForm(UserChangeForm):
+    email = forms.EmailField(widget=forms.EmailInput(
+        attrs={
+            'class':'form-control',
+            'style': 'width:300px',
+        }),required=True)
+    
+    first_name = forms.CharField(widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+            'style':'width:300px',
+        }), required=True)
+
+    last_name = forms.CharField(widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+            'style':'width:300px',
+        }), required=True)
 
     class Meta:
         model = User

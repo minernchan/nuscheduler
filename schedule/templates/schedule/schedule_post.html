@@ -1,7 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% if messages %}
+<div class="alert alert-success" role="alert">
+    <p class="messages">
+        {% for message in messages %}
+        <h6{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h6>
+        {% endfor %}
+    </p>
+</div>
+{% endif %}
 <div class="container-fluid">
+    {% if user.is_authenticated and user == schedulepost.user %}
+        <button type="button" class="btn btn-primary"><a href="/schedule/edit-schedule/{{schedulepost.id}}" style="color:#f6f6f6">Edit Schedule</a></button>
+    {% endif %}
+    <br>
+    <br>
     <h1>{{schedulepost.title}}</h1>
     {% if schedulepost.image %}
         <img src="{{ schedulepost.image.url }}" width="1000"> 
@@ -15,9 +29,14 @@
     <h4>Description:</h4>
     <p>{{ schedulepost.desc }}</p>
     <br>
-    <h6>Posted by {{ schedulepost.user.get_full_name }} on {{ schedulepost.created }}</h6>    
-        
+    <h6>Posted by <a href="{% url 'view_other_profile' username=schedulepost.user.username %}">{{ schedulepost.user.get_full_name }}</a> on {{ schedulepost.created }}</h6>    
+    <h6>Last edited by <a href="{% url 'view_other_profile' username=schedulepost.user.username %}"> {{ schedulepost.user.get_full_name }}</a> on {{ schedulepost.updated }}</h6>
+    <br>
+    {% if user.is_authenticated and user == schedulepost.user %}
+        <button type="button" class="btn btn-danger"><a href="/schedule/delete-schedule/{{schedulepost.id}}" style="color:#f6f6f6">Delete Schedule</a></button>
+    {% endif %}
 </div>
+<br>
 {% endblock %}
 
 
