@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from homepage.forms import RegistrationForm, EditProfileForm
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash # to make sure user is still logged in after password change
 from django.contrib.auth.decorators import login_required
@@ -61,14 +61,14 @@ def change_password(request):
         args = {'form': form}
         return render(request, 'homepage/change_password.html', args)
 
-def view_other_profile(request, username):
-    user = User.objects.get(username=username)
+def view_other_profile(request, id):
+    user = get_user_model().objects.get(id=id)
     if user == request.user:
         return redirect('view_profile')
     else:
         return render(request, 'homepage/view_other_profile.html', {'user':user})
 
-def view_uploaded_schedules(request, username):
-    user = User.objects.get(username=username)
+def view_uploaded_schedules(request, id):
+    user = get_user_model().objects.get(id=id)
     schedule_view = ListView.as_view(queryset=SchedulePost.objects.filter(user=user).order_by('-created'), template_name='homepage/view_uploaded_schedules.html')(request)
     return schedule_view

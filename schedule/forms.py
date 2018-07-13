@@ -1,6 +1,6 @@
 from django import forms
 from schedule.models import SchedulePost
-from schedule.choices import FACULTY_CHOICES
+from schedule.choices import FACULTY_CHOICES, blank_choice_faculty
 
 class ScheduleForm(forms.ModelForm):
     title = forms.CharField(widget=forms.TextInput(
@@ -14,8 +14,7 @@ class ScheduleForm(forms.ModelForm):
             'class':'form-control-file',
         }), required=True)
 
-    blank_choice = (('', 'Please select your faculty...'),)
-    faculty = forms.ChoiceField(choices= blank_choice + FACULTY_CHOICES,
+    faculty = forms.ChoiceField(choices= blank_choice_faculty + FACULTY_CHOICES,
         widget=forms.Select( 
             attrs={
                 'class':'form-control',

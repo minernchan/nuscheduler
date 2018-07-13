@@ -18,3 +18,17 @@ FACULTY_CHOICES = (
     ('Yale-NUS', 'Yale-NUS'),
 )
 
+blank_choice_faculty = (('', 'Please select your faculty...'),)
+
+YEAR_CHOICES = (
+    ('1','1'),
+    ('2','2'),
+    ('3','3'),
+    ('4','4'),
+    ('5','5'),
+    ('Alumni', 'Alumni'),
+    ('Incoming Student','Incoming Student'),
+    ('Other','Other'),
+)
+
+blank_choice_year = (('','Please select your year of study...'),)
