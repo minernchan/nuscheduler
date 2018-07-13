@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm, PasswordResetForm
 from nocaptcha_recaptcha.fields import NoReCaptchaField
 from django.core.exceptions import ValidationError
+from schedule.choices import FACULTY_CHOICES
 
 class RegistrationForm(UserCreationForm):
     
@@ -29,6 +30,9 @@ class RegistrationForm(UserCreationForm):
             'style': 'width: 300px',
         }),
         required=True)
+    
+
+
     captcha = NoReCaptchaField()
 
     

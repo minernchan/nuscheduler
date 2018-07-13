@@ -35,6 +35,7 @@ class ScheduleFormView(TemplateView):
             schedule_post = form.save(commit=False)
             schedule_post.title = form.cleaned_data['title']
             schedule_post.image = form.cleaned_data['image']
+            schedule_post.faculty = form.cleaned_data['faculty']
             schedule_post.course_name = form.cleaned_data['course_name']
             schedule_post.modules_taken = form.cleaned_data['modules_taken']
             schedule_post.desc = form.cleaned_data['desc']
@@ -57,6 +58,7 @@ def edit_schedule_post(request, pk):
                     schedule_post = form.save(commit=False)
                     schedule_post.title = form.cleaned_data['title']
                     schedule_post.image = form.cleaned_data['image']
+                    schedule_post.faculty = form.cleaned_data['faculty']
                     schedule_post.course_name = form.cleaned_data['course_name']
                     schedule_post.modules_taken = form.cleaned_data['modules_taken']
                     schedule_post.desc = form.cleaned_data['desc']

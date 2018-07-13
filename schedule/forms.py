@@ -1,5 +1,6 @@
 from django import forms
 from schedule.models import SchedulePost
+from schedule.choices import FACULTY_CHOICES
 
 class ScheduleForm(forms.ModelForm):
     title = forms.CharField(widget=forms.TextInput(
@@ -11,8 +12,16 @@ class ScheduleForm(forms.ModelForm):
     image = forms.ImageField(widget=forms.ClearableFileInput(
         attrs={
             'class':'form-control-file',
-            
         }), required=True)
+
+    blank_choice = (('', 'Please select your faculty...'),)
+    faculty = forms.ChoiceField(choices= blank_choice + FACULTY_CHOICES,
+        widget=forms.Select( 
+            attrs={
+                'class':'form-control',
+                'style': 'width:300px',
+            }),
+        required=True)
 
     course_name = forms.CharField(widget=forms.TextInput(
         attrs={
@@ -37,6 +46,6 @@ class ScheduleForm(forms.ModelForm):
 
     class Meta:
         model = SchedulePost
-        fields = ['title', 'course_name', 'modules_taken', 'desc', 'image']
+        fields = ['title', 'course_name', 'modules_taken', 'desc', 'image', 'faculty']
 
 

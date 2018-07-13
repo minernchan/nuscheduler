@@ -1,0 +1,20 @@
+FACULTY_CHOICES = (
+    ('Arts and Social Sciences', 'Arts and Social Sciences'),
+    ('Business', 'Business'),
+    ('Computing', 'Computing'),
+    ('Continuing and Lifelong Education', 'Continuing and Lifelong Education'),
+    ('Dentistry', 'Dentistry'),
+    ('Design and Environment', 'Design and Environment'),
+    ('Duke-NUS', 'Duke-NUS'),
+    ('Engineering', 'Engineering'),
+    ('Integrative Sciences and Engineering', 'Integrative Sciences and Engineering'),
+    ('Law', 'Law'),
+    ('Medicine', 'Medicine'),
+    ('Music', 'Music'),
+    ('Public Health', 'Public Health'),
+    ('Public Policy', 'Public Policy'),
+    ('Science', 'Science'),
+    ('University Scholars Programme', 'University Scholars Programme'),
+    ('Yale-NUS', 'Yale-NUS'),
+)
+
