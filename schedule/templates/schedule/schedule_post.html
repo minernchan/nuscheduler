@@ -31,8 +31,8 @@
     <h4>Description:</h4>
     <p>{{ schedulepost.desc }}</p>
     <br>
-    <h6>Posted by <a href="{% url 'view_other_profile' username=schedulepost.user.username %}">{{ schedulepost.user.get_full_name }}</a> on {{ schedulepost.created }}</h6>    
-    <h6>Last edited by <a href="{% url 'view_other_profile' username=schedulepost.user.username %}"> {{ schedulepost.user.get_full_name }}</a> on {{ schedulepost.updated }}</h6>
+    <h6>Posted by <a href="{% url 'view_other_profile' id=schedulepost.user.id %}">{{ schedulepost.user.get_full_name }}</a> on {{ schedulepost.created }}</h6>    
+    <h6>Last edited by <a href="{% url 'view_other_profile' id=schedulepost.user.id %}"> {{ schedulepost.user.get_full_name }}</a> on {{ schedulepost.updated }}</h6>
     <br>
     {% if user.is_authenticated and user == schedulepost.user %}
         <button type="button" class="btn btn-danger"><a href="/schedule/delete-schedule/{{schedulepost.id}}" style="color:#f6f6f6">Delete Schedule</a></button>
