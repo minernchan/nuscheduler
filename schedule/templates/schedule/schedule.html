@@ -13,6 +13,29 @@
 <div class="container-fluid">
     <h1>Schedules</h1>
 
+    <div class="dropdown">
+        <h3 style="float:right;">Filter by faculty:</h3><br><br>
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" style="float:right;">
+          Select a faculty...
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="{% url 'schedule' %}">All</a>
+          <a class="dropdown-item" href="{% url 'filter_schedule_arts' faculty_name='Arts and Social Sciences' %}">Arts and Social Sciences</a>
+          <a class="dropdown-item" href="{% url 'filter_schedule_arts' faculty_name='Business' %}">Business</a>
+          <a class="dropdown-item" href="{% url 'filter_schedule_arts' faculty_name='Computing' %}">Computing</a>
+          <a class="dropdown-item" href="{% url 'filter_schedule_arts' faculty_name='Dentistrys' %}">Dentistry</a>
+          <a class="dropdown-item" href="{% url 'filter_schedule_arts' faculty_name='Design and Environment' %}">Design and Environment</a>
+          <a class="dropdown-item" href="{% url 'filter_schedule_arts' faculty_name='Engineering' %}">Engineering</a>
+          <a class="dropdown-item" href="{% url 'filter_schedule_arts' faculty_name='Law' %}">Law</a>
+          <a class="dropdown-item" href="{% url 'filter_schedule_arts' faculty_name='Medicine' %}">Medicine</a>
+          <a class="dropdown-item" href="{% url 'filter_schedule_arts' faculty_name='Music' %}">Music</a>
+          <a class="dropdown-item" href="{% url 'filter_schedule_arts' faculty_name='Science' %}">Science</a>
+          <a class="dropdown-item" href="{% url 'filter_schedule_arts' faculty_name='University Scholars Programme' %}">University Scholars Programme</a>
+          <a class="dropdown-item" href="{% url 'filter_schedule_arts' faculty_name='Yale-NUS' %}">Yale-NUS</a>
+          <a class="dropdown-item" href="{% url 'filter_schedule_arts' faculty_name='Others' %}">Others</a>
+        </div>
+    </div>
+
     {% for schedule_post in schedule_posts %}
         <h1><a href="/schedule/{{schedule_post.id}}">{{ schedule_post.title }}</a></h1> 
         {% if schedule_post.image %}

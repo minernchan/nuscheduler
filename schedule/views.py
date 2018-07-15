@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 from django.shortcuts import render, redirect, get_object_or_404
 from schedule.forms import ScheduleForm
 from schedule.models import SchedulePost
@@ -86,3 +86,9 @@ def delete_schedule_post(request, pk):
     else:
         messages.error(request, "You are not authorized to do that!")
         return redirect('view_schedule', pk)
+
+def filter_schedule_faculty(request, faculty_name):
+    schedule_posts = SchedulePost.objects.filter(faculty=faculty_name).order_by('-created')
+    return render(request, 'schedule/schedule.html', {'schedule_posts':schedule_posts})
+
+

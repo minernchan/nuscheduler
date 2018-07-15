@@ -23,4 +23,3 @@ urlpatterns = [
     path('reset-password/confirm/<uidb64>/<token>/', password_reset_confirm, {'template_name': 'homepage/reset_password_confirm.html'}, name='password_reset_confirm'),
     path('reset-password/complete/', password_reset_complete, {'template_name': 'homepage/reset_password_complete.html'}, name='password_reset_complete')
 ]
- 
