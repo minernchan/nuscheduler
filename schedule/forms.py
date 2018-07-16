@@ -1,6 +1,6 @@
 from django import forms
 from schedule.models import SchedulePost
-from schedule.choices import FACULTY_CHOICES, blank_choice_faculty
+from schedule.choices import FACULTY_CHOICES, blank_choice_faculty, blank_choice_year, YEAR_CHOICES_SCHEDULE, blank_choice_semester, SEMESTER_CHOICES
 
 class ScheduleForm(forms.ModelForm):
     title = forms.CharField(widget=forms.TextInput(
@@ -28,6 +28,22 @@ class ScheduleForm(forms.ModelForm):
             'placeholder': 'Enter your course name...',
             'style': 'width:300px',
         }), required=True)
+
+    year = forms.ChoiceField(choices= blank_choice_year + YEAR_CHOICES_SCHEDULE,
+        widget=forms.Select( 
+            attrs={
+                'class':'form-control',
+                'style': 'width:300px',
+            }),
+        required=True)
+
+    semester = forms.ChoiceField(choices= blank_choice_semester + SEMESTER_CHOICES,
+        widget=forms.Select( 
+            attrs={
+                'class':'form-control',
+                'style': 'width:300px',
+            }),
+        required=True)
 
     modules_taken = forms.CharField(widget=forms.TextInput(
         attrs={

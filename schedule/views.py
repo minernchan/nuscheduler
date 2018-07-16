@@ -1,10 +1,15 @@
 from django.views.generic import TemplateView, ListView
 from django.shortcuts import render, redirect, get_object_or_404
-from schedule.forms import ScheduleForm
-from schedule.models import SchedulePost
+
 from django.core.exceptions import PermissionDenied
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.contenttypes.models import ContentType
+
+from schedule.filters import SchedulePostFilter
+from schedule.forms import ScheduleForm
+from schedule.models import SchedulePost
+from comments.models import Comment
 
 class ScheduleView(TemplateView):
     template_name = 'schedule/schedule.html'
@@ -87,8 +92,9 @@ def delete_schedule_post(request, pk):
         messages.error(request, "You are not authorized to do that!")
         return redirect('view_schedule', pk)
 
-def filter_schedule_faculty(request, faculty_name):
-    schedule_posts = SchedulePost.objects.filter(faculty=faculty_name).order_by('-created')
-    return render(request, 'schedule/schedule.html', {'schedule_posts':schedule_posts})
 
 
+def schedule_search(request):
+    schedule_list = SchedulePost.objects.all().order_by('-created')
+    schedule_filter = SchedulePostFilter(request.GET, queryset=schedule_list)
+    return render(request, 'schedule/schedule_search.html', {'filter':schedule_filter })

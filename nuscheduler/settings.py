@@ -32,17 +32,23 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'accounts',
-    'homepage',
-    'update',
-    'schedule',
-    'nocaptcha_recaptcha',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # third party
+    'nocaptcha_recaptcha',
+    'django_filters',
+
+    # local apps
+    'accounts',
+    'comments',
+    'homepage',
+    'update',
+    'schedule',
+
 ]
 
 # User substitution

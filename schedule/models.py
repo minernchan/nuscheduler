@@ -8,6 +8,8 @@ class SchedulePost(models.Model):
     image = models.ImageField(upload_to='schedule_image')
     faculty = models.CharField(max_length=100)
     course_name = models.CharField(max_length=200)
+    year = models.IntegerField()
+    semester = models.CharField(max_length=100)
     modules_taken = models.CharField(max_length=500)
     desc = models.TextField()
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)

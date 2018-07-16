@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if messages %}
+<div class="alert alert-success" role="alert">
+    <p class="messages">
+        {% for message in messages %}
+        <h6{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h6>
+        {% endfor %}
+    </p>
+</div>
+{% endif %}
+<div class="container-fluid">
+    <h1>Schedules</h1>
+
+    <form method="GET">
+        <div class="well">
+            <h4 style="margin-top: 0">Filter</h4>
+            <div class="row">
+                <div class="form-group col-sm-4 col-md-3">
+                    {{ filter.form.title.label_tag }}
+                    {{ filter.form.title }}
+                </div>
+                <div class="form-group col-sm-4 col-md-3">
+                    {{ filter.form.faculty.label_tag }}
+                    {{ filter.form.faculty }}
+                </div>
+                <div class="form-group col-sm-4 col-md-3">
+                    {{ filter.form.course_name.label_tag }}
+                    {{ filter.form.course_name }}
+                </div>
+                <div class="form-group col-sm-4 col-md-3">
+                    {{ filter.form.modules_taken.label_tag }}
+                    {{ filter.form.modules_taken }}
+                </div>
+
+                <div class="form-group col-sm-4 col-md-3">
+                    {{ filter.form.year.label_tag }}
+                    {{ filter.form.year }}
+                </div>
+                <div class="form-group col-sm-4 col-md-3">
+                    {{ filter.form.semester.label_tag }}
+                    {{ filter.form.semester }}
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="color:#f6f6f6">Search</button>
+        <button type="reset" class="btn btn-success" style="color:#f6f6f6">Reset</button>
+        <button type="button" class="btn btn-danger"><a href="/schedule/" style="color:#f6f6f6">Cancel</a></button>
+    </form>
+
+    {% for schedule_post in filter.qs %}
+        <h1><a href="/schedule/{{schedule_post.id}}">{{ schedule_post.title }}</a></h1> 
+        {% if schedule_post.image %}
+            <img src="{{ schedule_post.image.url }}" width="750"> 
+        {% endif %}
+        <h6>Posted by <a href="{% url 'view_other_profile' id=schedule_post.user.id %}">{{ schedule_post.user.get_full_name }}</a> on {{ schedule_post.created }}</h6>    
+        <h6>Last edited by <a href="{% url 'view_other_profile' id=schedule_post.user.id %}"> {{ schedule_post.user.get_full_name }}</a> on {{ schedule_post.updated }}</h6>
+        <br>
+    {% endfor %}
+    <br>
+    <br>
+</div>
+{% endblock %}
+
