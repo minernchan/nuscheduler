@@ -61,6 +61,6 @@ class ScheduleForm(forms.ModelForm):
 
     class Meta:
         model = SchedulePost
-        fields = ['title', 'course_name', 'modules_taken', 'desc', 'image', 'faculty']
+        fields = ['title', 'image','faculty', 'course_name', 'year', 'semester', 'modules_taken', 'desc',]
 
 

@@ -26,7 +26,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*',]
 
 
 # Application definition
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # third party
     'nocaptcha_recaptcha',
     'django_filters',
+    'crispy_forms',
 
     # local apps
     'accounts',
@@ -50,6 +51,8 @@ INSTALLED_APPS = [
     'schedule',
 
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # User substitution
 # https://docs.djangoproject.com/en/1.11/topics/auth/customizing/#auth-custom-user
@@ -140,6 +143,7 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'nuscheduler/media')
 
 LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/login/'
 
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025

@@ -48,7 +48,7 @@
         <button type="reset" class="btn btn-success" style="color:#f6f6f6">Reset</button>
         <button type="button" class="btn btn-danger"><a href="/schedule/" style="color:#f6f6f6">Cancel</a></button>
     </form>
-
+    <br>
     {% for schedule_post in filter.qs %}
         <h1><a href="/schedule/{{schedule_post.id}}">{{ schedule_post.title }}</a></h1> 
         {% if schedule_post.image %}
@@ -56,6 +56,7 @@
         {% endif %}
         <h6>Posted by <a href="{% url 'view_other_profile' id=schedule_post.user.id %}">{{ schedule_post.user.get_full_name }}</a> on {{ schedule_post.created }}</h6>    
         <h6>Last edited by <a href="{% url 'view_other_profile' id=schedule_post.user.id %}"> {{ schedule_post.user.get_full_name }}</a> on {{ schedule_post.updated }}</h6>
+        <hr>
         <br>
     {% endfor %}
     <br>

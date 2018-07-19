@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 {% if messages %}
@@ -12,13 +13,24 @@
 {% endif %}
 <div class="container-fluid">
     {% if user.is_authenticated and user == schedulepost.user %}
-        <button type="button" class="btn btn-primary" style="float:right;"><a href="/schedule/edit-schedule/{{schedulepost.id}}" style="color:#f6f6f6">Edit Schedule</a></button>
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle float-right" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Options
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="/schedule/edit-schedule/{{schedulepost.id}}">Edit Schedule</a>
+                <a class="dropdown-item" href="/schedule/delete-schedule/{{schedulepost.id}}">Delete Schedule</a>
+            </div>
+        </div>
+        <h1 style="display:inline-block;">{{schedulepost.title}}</h1>
+    {% else %}
+        <h1>{{schedulepost.title}}</h1>
     {% endif %}
     <br>
     <br>
-    <h1 style="display:inline-block;">{{schedulepost.title}}</h1>
+    
     {% if schedulepost.image %}
-        <img src="{{ schedulepost.image.url }}" width="1000"> 
+        <img src="{{ schedulepost.image.url }}" width="700"> 
         <br>
     {% endif %}
     <br>
@@ -36,18 +48,71 @@
     <h6>Posted by <a href="{% url 'view_other_profile' id=schedulepost.user.id %}">{{ schedulepost.user.get_full_name }}</a> on {{ schedulepost.created }}</h6>    
     <h6>Last edited by <a href="{% url 'view_other_profile' id=schedulepost.user.id %}"> {{ schedulepost.user.get_full_name }}</a> on {{ schedulepost.updated }}</h6>
     <br>
-    {% if user.is_authenticated and user == schedulepost.user %}
-        <button type="button" class="btn btn-danger"><a href="/schedule/delete-schedule/{{schedulepost.id}}" style="color:#f6f6f6">Delete Schedule</a></button>
-    {% endif %}
+
+
+    <h3>Comments</h3>
+    <form method="POST">
+        {% csrf_token %}
+        {{ comment_form|crispy }}
+        <button type="submit" class="btn btn-default">Comment</button>
+    </form>
+    <hr>
+    {% for comment in comments %}
+    <blockquote class="blockquote">
+        <p class="mb-0">{{ comment.content }}</p>
+        <footer class="blockquote-footer"><small>Posted by <a href="{% url 'view_other_profile' id=comment.user.id%}"> {{comment.user.get_full_name }}</a> | 
+            {{comment.timestamp|timesince}} ago on {{comment.timestamp}} | {% if comment.children.count > 1 %} {{ comment.children.count }} Replies |
+            {% elif comment.children.count > 0 %} {{ comment.children.count }} Reply | {% endif %} 
+            <a data-toggle="collapse" href="#collapse{{ comment.id }}" role="button" aria-expanded="false" aria-controls="collapse{{ comment.id }}">Reply</a></small>
+
+        </footer>
+
+                {% for child_comment in comment.children %}
+                <blockquote class="blockquote" style="margin-left:30px;">
+                    <p class="mb-0">{{ child_comment.content }}</p>
+                    <footer class="blockquote-footer"><small>Posted by <a href="{% url 'view_other_profile' id=comment.user.id%}"> {{child_comment.user.get_full_name }}</a> | 
+                    {{child_comment.timestamp|timesince}} ago on {{child_comment.timestamp}}</small></footer>
+                </blockquote> 
+                {% endfor %}
+        
+        <div class="collapse" id='collapse{{ comment.id }}'>
+            <div class="card card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ comment_form|crispy }} 
+                    <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                    <button type="submit" class="btn btn-default">Reply</button>
+                </form>
+            </div>  
+        </div>
+
+    </blockquote>  
+    <hr>
+    {% endfor %}
+
 </div>
 <br>
-<div class="container-fluid">
-    <h3>Comments</h3>
-    {{ comments }}
-</div>
 <br>
 
 {% endblock %}
-
-
-    
+<p>
+    <a class="btn btn-primary" data-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Toggle first element</a>
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">Toggle second element</button>
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target=".multi-collapse" aria-expanded="false" aria-controls="multiCollapseExample1 multiCollapseExample2">Toggle both elements</button>
+    </p>
+    <div class="row">
+    <div class="col">
+        <div class="collapse multi-collapse" id="multiCollapseExample1">
+        <div class="card card-body">
+            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+        </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="collapse multi-collapse" id="multiCollapseExample2">
+        <div class="card card-body">
+            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+        </div>
+        </div>
+    </div>
+    </div>
