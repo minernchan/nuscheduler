@@ -1,29 +1,26 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% if messages %}
-<div class="alert alert-success" role="alert">
-    <p class="messages">
-        {% for message in messages %}
-        <h6{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h6>
-        {% endfor %}
-    </p>
-</div>
-{% endif %}
+
 <div class="container-fluid">
-    <h1 style="display:inline-block;">Latest Schedules</h1>
-
-    <button type="button" class="btn btn-primary btn-lg" style="float:right;"><a href="/schedule/search/" style="color:#f6f6f6">Search for specific schedule</a></button>
-
+    <button type="button" class="btn btn-primary btn-lg" style="float:right;"><a href="/schedule/search/" style="color:#f6f6f6"><i class="fas fa-search"></i> Search for specific schedule</a></button>
+    <h1>Latest Schedules</h1>
+    <br>
     {% for schedule_post in schedule_posts %}
-        <h1><a href="/schedule/{{schedule_post.id}}">{{ schedule_post.title }}</a></h1> 
-        {% if schedule_post.image %}
-            <img src="{{ schedule_post.image.url }}" width="750"> 
-        {% endif %}
-        <h6>Posted by <a href="{% url 'view_other_profile' id=schedule_post.user.id %}">{{ schedule_post.user.get_full_name }}</a> on {{ schedule_post.created }}</h6>    
-        <h6>Last edited by <a href="{% url 'view_other_profile' id=schedule_post.user.id %}"> {{ schedule_post.user.get_full_name }}</a> on {{ schedule_post.updated }}</h6>
-        <hr>
-        <br>
+        {% if forloop.first %} <div class="row"> {% endif %}
+            <div class="col-sm-6">
+                <h3><a href="/schedule/{{schedule_post.id}}">{{ schedule_post.title }}</a></h1> 
+                {% if schedule_post.image %}
+                    <img src="{{ schedule_post.image.url }}" width="400"> 
+                {% endif %}
+                <h6>Posted by <a href="{% url 'view_other_profile' id=schedule_post.user.id %}">{{ schedule_post.user.get_full_name }}</a> on {{ schedule_post.created }}</h6>    
+                <h6>Last edited by <a href="{% url 'view_other_profile' id=schedule_post.user.id %}"> {{ schedule_post.user.get_full_name }}</a> on {{ schedule_post.updated }}</h6>
+                <p><i class="far fa-thumbs-up"></i> {{ schedule_post.like.count }} </p>
+                <hr>
+                <br>
+            </div>
+        {% if forloop.counter|divisibleby:2 %} </div> <div class="row"> {% endif %}
+        {% if forloop.last %} </div> {% endif %}
     {% endfor %}
     <br>
     <br>

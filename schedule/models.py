@@ -15,6 +15,13 @@ class SchedulePost(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+    like = models.ManyToManyField(get_user_model(),related_name='user_votes')
+
 
     def __str__(self):
         return self.title
+
+
+
+
+

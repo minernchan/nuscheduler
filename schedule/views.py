@@ -11,6 +11,7 @@ from schedule.models import SchedulePost
 from comments.forms import CommentForm
 from comments.models import Comment
 
+
 class ScheduleView(TemplateView):
     template_name = 'schedule/schedule.html'
 
@@ -88,6 +89,8 @@ def schedule_detail(request,pk):
     }
     return render(request, template, args)
 
+
+
 @login_required
 def edit_schedule_post(request, pk):
     template = 'schedule/schedule_submit.html'
@@ -129,7 +132,27 @@ def delete_schedule_post(request, pk):
         messages.error(request, "You are not authorized to do that!")
         return redirect('view_schedule', pk)
 
+@login_required
+def like_schedule(request,pk):
+    schedule_post = get_object_or_404(SchedulePost, pk=pk)
+    if request.user in schedule_post.like.all():
+        messages.error(request, "You have already liked this post!")
+        return redirect('view_schedule', pk)
+    else:
+        schedule_post.like.add(request.user)
+        messages.success(request, "Successfully liked this post!")
+        return redirect('view_schedule',pk)
 
+@login_required
+def remove_like_schedule(request,pk):
+    schedule_post = get_object_or_404(SchedulePost, pk=pk)
+    if request.user in schedule_post.like.all(): #upvoted before
+        schedule_post.like.remove(request.user)
+        messages.success(request, "You have removed your like for this post!")
+        return redirect('view_schedule', pk)
+    else: #did not upvote before
+        messages.error(request, "You did not like this post yet!")
+        return redirect('view_schedule',pk)
 
 def schedule_search(request):
     schedule_list = SchedulePost.objects.all().order_by('-created')

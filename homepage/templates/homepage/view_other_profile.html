@@ -8,9 +8,9 @@
     <p><b>Faculty:</b> {{ user.faculty }} </p>
     <p><b>Course name:</b> {{ user.course_name }} </p>
     <p><b>Year of Study:</b> {{ user.year }} </p>
-    <p><b>Date Joined:</b> {{ user.date_joined }} </p>
+    <p><b>Date Joined:</b> {{ user.date_joined|date }} </p>
 
-    <button type="button" class="btn btn-primary"><a href="{% url 'view_uploaded_schedules' id=user.id %}" style="color:#f6f6f6">View Uploaded Schedules</a></button>
+    <button type="button" class="btn btn-primary"><a href="{% url 'view_uploaded_schedules' id=user.id %}" style="color:#f6f6f6"><i class="far fa-calendar"></i> View Uploaded Schedules</a></button>
 </div>
 {% endblock %}
 
