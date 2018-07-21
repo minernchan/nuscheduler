@@ -6,9 +6,9 @@ from django.contrib.auth.views import (
 from homepage.forms import CustomAuthenticationForm, EmailValidationOnForgotPassword
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('login/', login, {'template_name': 'homepage/login.html', 'authentication_form': CustomAuthenticationForm}),
-    path('logout/', logout, {'template_name': 'homepage/logout.html'}),
+    path('', views.index, name='home'),
+    path('login/', login, {'template_name': 'homepage/login.html', 'authentication_form': CustomAuthenticationForm}, name='login'),
+    path('logout/', logout, {'template_name': 'homepage/logout.html'}, name='logout'),
     path('register/', views.register, name='register'),
     path('register/complete/', views.register_complete, name='register_complete'),
     path('profile/', views.view_profile, name='view_profile'),

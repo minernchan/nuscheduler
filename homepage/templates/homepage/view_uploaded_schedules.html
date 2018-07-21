@@ -7,7 +7,7 @@
     {% if forloop.first %} <div class="row"> {% endif %}
         <div class="col-sm-6">
             <hr>
-            <h3><a href="/schedule/{{schedule_post.id}}">{{ schedule_post.title }}</a></h3> 
+            <h3><a href="{% url 'view_schedule' pk=schedule_post.id %}">{{ schedule_post.title }}</a></h3> 
             {% if schedule_post.image %}
                 <img src="{{ schedule_post.image.url }}" class="img-fluid" style="max-width:90%"> 
             {% endif %}

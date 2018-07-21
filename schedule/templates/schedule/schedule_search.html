@@ -38,14 +38,14 @@
         </div>
         <button type="submit" class="btn btn-primary" style="color:#f6f6f6"><i class="fas fa-search"></i> Search</button>
         <button type="reset" class="btn btn-success" style="color:#f6f6f6"><i class="fas fa-undo"></i> Reset</button>
-        <button type="button" class="btn btn-danger"><a href="/schedule/" style="color:#f6f6f6"><i class="fas fa-times"></i> Cancel</a></button>
+        <button type="button" class="btn btn-danger"><a href="{% url 'schedule' %}" style="color:#f6f6f6"><i class="fas fa-times"></i> Cancel</a></button>
     </form>
     <br>
     {% for schedule_post in filter.qs %}
     {% if forloop.first %} <div class="row"> {% endif %}
         <div class="col-sm-6">
             <hr>
-            <h3><a href="/schedule/{{schedule_post.id}}">{{ schedule_post.title }}</a></h3> 
+            <h3><a href="{% url 'view_schedule' pk=schedule_post.id %}">{{ schedule_post.title }}</a></h3> 
             {% if schedule_post.image %}
                 <img src="{{ schedule_post.image.url }}" class="img-fluid" style="max-width:90%"> 
             {% endif %}

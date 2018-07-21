@@ -3,14 +3,14 @@
 {% block content %}
 
 <div class="container-fluid">
-    <button type="button" class="btn btn-primary btn-lg" style="float:right;"><a href="/schedule/search/" style="color:#f6f6f6"><i class="fas fa-search"></i> Search for specific schedule</a></button>
+    <button type="button" class="btn btn-primary btn-lg" style="float:right;"><a href="{% url 'schedule_search' %}" style="color:#f6f6f6"><i class="fas fa-search"></i> Search for specific schedule</a></button>
     <h1>Latest Schedules</h1>
     <br>
     {% for schedule_post in schedule_posts %}
         {% if forloop.first %} <div class="row"> {% endif %}
             <div class="col-sm-6">
                 <hr>
-                <h3><a href="/schedule/{{schedule_post.id}}">{{ schedule_post.title }}</a></h3> 
+                <h3><a href="{% url 'view_schedule' pk=schedule_post.id %}">{{ schedule_post.title }}</a></h3> 
                 {% if schedule_post.image %}
                     <img src="{{ schedule_post.image.url }}" class="img-fluid" style="max-width:90%"> 
                 {% endif %}

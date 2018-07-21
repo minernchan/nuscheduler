@@ -11,8 +11,8 @@
                 Options
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="/schedule/edit-schedule/{{schedulepost.id}}"><i class="far fa-edit"></i> Edit Schedule</a>
-                <a class="dropdown-item" href="/schedule/delete-schedule/{{schedulepost.id}}"><i class="fas fa-trash-alt"></i> Delete Schedule</a>
+                <a class="dropdown-item" href="{% url 'edit_schedule_post' pk=schedulepost.id %}"><i class="far fa-edit"></i> Edit Schedule</a>
+                <a class="dropdown-item" href="{% url 'delete_schedule_post' pk=schedulepost.id %}"><i class="fas fa-trash-alt"></i> Delete Schedule</a>
             </div>
         </div>
         <h1 style="display:inline-block;">{{schedulepost.title}}</h1>

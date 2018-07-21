@@ -11,7 +11,7 @@
     <p><b>Date Joined:</b> {{ user.date_joined|date }} </p>
     
     <button type="button" class="btn btn-primary"><a href="{% url 'view_uploaded_schedules' id=user.id %}" style="color:#f6f6f6"><i class="far fa-calendar"></i> View Uploaded Schedules</a></button>
-    <button type="button" class="btn btn-primary"><a href="/profile/edit" style="color:#f6f6f6"><i class="far fa-edit"></i> Edit Information</a></button>
+    <button type="button" class="btn btn-primary"><a href="{% url 'edit_profile' %}" style="color:#f6f6f6"><i class="far fa-edit"></i> Edit Information</a></button>
     <button type="button" class="btn btn-primary"><a href="{% url 'view_bookmarked_schedules' %}" style="color:#f6f6f6"><i class="fas fa-bookmark"></i> View Bookmarked Schedules</a></button>
     <br><br>
 
