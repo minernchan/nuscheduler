@@ -23,7 +23,7 @@
     <br>
     
     {% if schedulepost.image %}
-        <img src="{{ schedulepost.image.url }}" width="700"> 
+        <img src="{{ schedulepost.image.url }}" class="img-fluid" style="max-width:90%"> 
         <br>
     {% endif %}
     <br>
@@ -43,10 +43,15 @@
     <br>
     <p><i class="far fa-thumbs-up"></i> {{ schedulepost.like.count }} </p>
 
-    {% if request.user in schedulepost.like.all %}
-    <a href="{% url 'remove_like_schedule' pk=schedulepost.id %}"><i class="fas fa-thumbs-down"></i> Unlike</a>
+    {% if user.is_authenticated and request.user in schedulepost.like.all %}
+        <button class="btn btn-danger" type="button"><a href="{% url 'remove_like_schedule' pk=schedulepost.id %}" style="color:white"><i class="fas fa-thumbs-down"></i> Unlike</a></button>
+    {% elif user.is_authenticated %}
+        <button class="btn btn-primary" type="button"><a href="{% url 'like_schedule' pk=schedulepost.id %}" style="color:white"><i class="far fa-thumbs-up"></i> Like</a></button>
+    {% endif %}
+    {% if user.is_authenticated and schedulepost in bookmarks %}
+        <button class="btn btn-danger" type="button"><a href="{% url 'remove_bookmark_schedule' pk=schedulepost.id %}" style="color:white"><i class="fas fa-times"></i> Remove Bookmark</a></button>
     {% else %}
-    <a href="{% url 'like_schedule' pk=schedulepost.id %}"><i class="far fa-thumbs-up"></i> Like</a>
+        <button class="btn btn-primary" type="button"><a href="{% url 'add_bookmark_schedule' pk=schedulepost.id %}" style="color:white"><i class="fas fa-bookmark"></i> Bookmark</a></button>
     {% endif %}
     <br><br>
 

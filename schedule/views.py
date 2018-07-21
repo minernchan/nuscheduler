@@ -4,13 +4,14 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.core.exceptions import PermissionDenied
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import get_user_model
 
 from schedule.filters import SchedulePostFilter
 from schedule.forms import ScheduleForm
 from schedule.models import SchedulePost
 from comments.forms import CommentForm
 from comments.models import Comment
-
+from homepage.models import Bookmark
 
 class ScheduleView(TemplateView):
     template_name = 'schedule/schedule.html'
@@ -56,6 +57,7 @@ def schedule_detail(request,pk):
     template = 'schedule/schedule_post.html'
     schedule_post = get_object_or_404(SchedulePost, pk=pk)
     
+    #Comments
     comment_form = CommentForm(request.POST or None)
     if comment_form.is_valid():
         content_data = comment_form.cleaned_data['content']
@@ -82,10 +84,20 @@ def schedule_detail(request,pk):
 
     comments = Comment.objects.filter(schedule_post=schedule_post).filter(parent=None)
 
+    #Bookmarks
+    user = get_user_model().objects.get(id=request.user.id) 
+    if Bookmark.objects.filter(user=user).exists():
+        user_bookmark = Bookmark.objects.get(user=user)
+    else:
+        new_user_bookmark, created = Bookmark.objects.get_or_create(user=request.user)
+        user_bookmark = Bookmark.objects.get(user=user)
+    bookmarks = user_bookmark.bookmarks.all()
+
     args = {
         'schedulepost': schedule_post,
         'comments': comments,
         'comment_form': comment_form,
+        'bookmarks': bookmarks,
     }
     return render(request, template, args)
 
@@ -152,9 +164,42 @@ def remove_like_schedule(request,pk):
         return redirect('view_schedule', pk)
     else: #did not upvote before
         messages.error(request, "You did not like this post yet!")
-        return redirect('view_schedule',pk)
+        return redirect('view_schedule', pk)
 
 def schedule_search(request):
     schedule_list = SchedulePost.objects.all().order_by('-created')
     schedule_filter = SchedulePostFilter(request.GET, queryset=schedule_list)
     return render(request, 'schedule/schedule_search.html', {'filter':schedule_filter })
+
+@login_required
+def add_bookmark(request,pk):
+    schedule_post = get_object_or_404(SchedulePost, pk=pk)
+    user = get_user_model().objects.get(id=request.user.id) 
+
+    if Bookmark.objects.filter(user=user).exists():
+        user_bookmark = Bookmark.objects.get(user=user)
+    else:
+        new_user_bookmark, created = Bookmark.objects.get_or_create(user=request.user)
+        user_bookmark = Bookmark.objects.get(user=user)
+    
+    if schedule_post in user_bookmark.bookmarks.all(): #bookmarked before
+        messages.error(request, "Already added to your bookmarks!")
+        return redirect('view_schedule', pk)
+    else: 
+        user_bookmark.bookmarks.add(schedule_post)
+        messages.success(request, "Succesfully added to your bookmarks!")
+        return redirect('view_schedule', pk)
+
+@login_required
+def remove_bookmark(request,pk):
+    schedule_post = get_object_or_404(SchedulePost, pk=pk)
+    user = get_user_model().objects.get(id=request.user.id) 
+    user_bookmark = Bookmark.objects.get(user=user)
+
+    if schedule_post in user_bookmark.bookmarks.all(): #bookmarked before
+        user_bookmark.bookmarks.remove(schedule_post)
+        messages.success(request, "Successfully removed from your bookmarks!")
+        return redirect('view_schedule', pk)
+    else: 
+        messages.error(request, "You have not added this post to your bookmarks yet!")
+        return redirect('view_schedule', pk)

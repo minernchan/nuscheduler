@@ -2,8 +2,8 @@
 
 {% block content %}
 <div class="container-fluid">
-    <h1>Uploaded schedules</h1>
-    {% for schedule_post in object_list %}
+    <h1>Your Bookmarked Schedules</h1>
+    {% for schedule_post in bookmarks %}
     {% if forloop.first %} <div class="row"> {% endif %}
         <div class="col-sm-6">
             <hr>

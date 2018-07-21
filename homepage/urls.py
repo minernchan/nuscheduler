@@ -21,5 +21,6 @@ urlpatterns = [
      'password_reset_form': EmailValidationOnForgotPassword}, name='reset_password'),
     path('reset-password/done/', password_reset_done, {'template_name': 'homepage/reset_password_done.html'}, name='password_reset_done'),
     path('reset-password/confirm/<uidb64>/<token>/', password_reset_confirm, {'template_name': 'homepage/reset_password_confirm.html'}, name='password_reset_confirm'),
-    path('reset-password/complete/', password_reset_complete, {'template_name': 'homepage/reset_password_complete.html'}, name='password_reset_complete')
+    path('reset-password/complete/', password_reset_complete, {'template_name': 'homepage/reset_password_complete.html'}, name='password_reset_complete'),
+    path('profile/view-bookmarked-schedules/', views.view_bookmarked_schedules, name='view_bookmarked_schedules'),
 ]

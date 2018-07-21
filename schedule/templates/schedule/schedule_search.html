@@ -44,14 +44,14 @@
     {% for schedule_post in filter.qs %}
     {% if forloop.first %} <div class="row"> {% endif %}
         <div class="col-sm-6">
+            <hr>
             <h3><a href="/schedule/{{schedule_post.id}}">{{ schedule_post.title }}</a></h3> 
             {% if schedule_post.image %}
-                <img src="{{ schedule_post.image.url }}" width="400"> 
+                <img src="{{ schedule_post.image.url }}" class="img-fluid" style="max-width:90%"> 
             {% endif %}
             <h6>Posted by <a href="{% url 'view_other_profile' id=schedule_post.user.id %}">{{ schedule_post.user.get_full_name }}</a> on {{ schedule_post.created }}</h6>    
             <h6>Last edited by <a href="{% url 'view_other_profile' id=schedule_post.user.id %}"> {{ schedule_post.user.get_full_name }}</a> on {{ schedule_post.updated }}</h6>
             <p><i class="far fa-thumbs-up"></i> {{ schedule_post.like.count }} </p>
-            <hr>
             <br>
         </div>
     {% if forloop.counter|divisibleby:2 %} </div> <div class="row"> {% endif %}
