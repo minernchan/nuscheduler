@@ -27,33 +27,41 @@
 <body class="body" style="background-color:#f6f6f6">
 	<!-- Navbar -->
 	<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-		<div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
-			<a class="navbar-brand" href="{% url 'home' %}">
-				<img src="{% static 'homepage/img/NUScheduler-logo.png' %}" class="responsive-img" width="150" height="60" alt="NUScheduler Logo">
-			</a>
-			<div class="navbar-nav">
-				<a href="{% url 'home' %}" class="nav-item nav-link"><i class="fas fa-home fa-fw " style="color:white"></i> Home</a></li>
-				<a href="{% url 'schedule' %}" class="nav-link"><i class="far fa-calendar fa-fw " style="color:white"></i> Schedules</a></li>
-				<a href="{% url 'updates' %}" class="nav-link"><i class="fas fa-wrench " style="color:white"></i> Updates</a></li>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="navbar-collapse collapse dual-collapse2" id="navbarNav">
+			<div class="navbar-collapse w-100 order-1 order-md-0">
+				<a class="navbar-brand" href="{% url 'home' %}">
+					<img src="{% static 'homepage/img/NUScheduler-logo.png' %}" class="responsive-img" width="150" height="60" alt="NUScheduler Logo">
+				</a>
+				<div class="navbar-nav">
+					<a href="{% url 'home' %}" class="nav-item nav-link"><i class="fas fa-home fa-fw " style="color:white"></i> Home</a></li>
+					<a href="{% url 'schedule' %}" class="nav-link"><i class="far fa-calendar fa-fw " style="color:white"></i> Schedules</a></li>
+					<a href="{% url 'updates' %}" class="nav-link"><i class="fas fa-wrench " style="color:white"></i> Updates</a></li>
+				</div>
 			</div>
-		</div>
+		
 		{% if user.is_authenticated %}
-		<div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-			<ul class="navbar-nav ml-auto">
-				<li class="nav-item"><button type="button" class="btn btn-danger"><a href="{% url 'schedule_submit' %}" style="color:#f6f6f6"><i class="fas fa-share"></i> Share your schedule</a></button></li>
-				<li class="nav-item"><a class="nav-link" href="{% url 'view_profile' %}"><i class="fas fa-user" style="color:white"></i> Profile</a></li>
-				<li class="nav-item"><a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt" style="color:white"></i> Logout</a></li>
-			</ul>
-		</div>
+			<div class="navbar-collapse w-100 order-3 ">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item"><button type="button" class="btn btn-danger"><a href="{% url 'schedule_submit' %}" style="color:#f6f6f6"><i class="fas fa-share"></i> Share your schedule</a></button></li>
+					<li class="nav-item"><a class="nav-link" href="{% url 'view_profile' %}"><i class="fas fa-user" style="color:white"></i> Profile</a></li>
+					<li class="nav-item"><a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt" style="color:white"></i> Logout</a></li>
+				</ul>
+			</div>
+		
 		
 		{% else %} 
 		
 
-		<div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-			<ul class="navbar-nav ml-auto">
-				<li class="nav-item"><a class="nav-link" href="{% url 'login' %}"><i class="fas fa-sign-in-alt" style="color:white"></i> Login</a></li>
-				<li class="nav-item"><a class="nav-link" href="{% url 'register' %}"><i class="fas fa-user-plus" style="color:white"></i> Register</a></li>
-			</ul>
+			<div class="navbar-collapse w-100 order-3">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item"><a class="nav-link" href="{% url 'login' %}"><i class="fas fa-sign-in-alt" style="color:white"></i> Login</a></li>
+					<li class="nav-item"><a class="nav-link" href="{% url 'register' %}"><i class="fas fa-user-plus" style="color:white"></i> Register</a></li>
+				</ul>
+			</div>
 		</div>
 		{% endif %}
 	</nav>
