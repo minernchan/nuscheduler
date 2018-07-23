@@ -6,6 +6,20 @@
 
 /* Sidebar Styles */
 
+@media only screen and (min-device-width : 320px) and (max-device-width : 480px) {
+  /* Styles */
+
+  .h3{
+    font-size:8vw;
+  }
+
+}
+
+.ul
+{
+    list-style-type: none;
+}
+
 .sidebar-nav {
   width: 155px;
   height: 100%;

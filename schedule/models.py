@@ -1,6 +1,8 @@
 import uuid
 from django.db import models
 from django.contrib.auth import get_user_model
+from multiselectfield import MultiSelectField
+from schedule.choices import MODULE_CHOICES
 
 class SchedulePost(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -10,7 +12,7 @@ class SchedulePost(models.Model):
     course_name = models.CharField(max_length=200)
     year = models.IntegerField()
     semester = models.CharField(max_length=100)
-    modules_taken = models.CharField(max_length=500)
+    modules_taken = MultiSelectField(choices=MODULE_CHOICES)
     desc = models.TextField()
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
@@ -20,8 +22,3 @@ class SchedulePost(models.Model):
 
     def __str__(self):
         return self.title
-
-
-
-
-

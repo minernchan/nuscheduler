@@ -21,7 +21,7 @@
 		  height:100%
 		}
 	</style>
-
+	{{ form.media.css }}
 </head>
 
 <body class="body" style="background-color:#f6f6f6">
@@ -98,7 +98,7 @@
 	<script defer src="{% static 'homepage/js/all.js' %}"></script>
 
 	<script src='https://www.google.com/recaptcha/api.js'></script>
-
+	{{ form.media.js }}
 </body>
 
 </html>

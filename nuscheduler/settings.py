@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'nocaptcha_recaptcha',
     'django_filters',
     'crispy_forms',
-    
+    'django_select2',
 
     # local apps
     'accounts',

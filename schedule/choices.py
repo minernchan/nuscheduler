@@ -1,3 +1,5 @@
+import requests, json
+
 FACULTY_CHOICES = (
     ('Arts and Social Sciences', 'Arts and Social Sciences'),
     ('Business', 'Business'),
@@ -69,3 +71,9 @@ SEMESTER_FILTER_CHOICES = (
 )
 
 blank_choice_semester = (('','Please select a semester...'),)
+
+
+def edit(item):
+    return tuple(tuple((str(choice), str(choice)) for choice in item))
+
+MODULE_CHOICES = edit(requests.get('http://api.nusmods.com/2018-2019/1/moduleCodes.json').json())

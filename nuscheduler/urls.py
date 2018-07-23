@@ -23,4 +23,5 @@ urlpatterns = [
     path('', include('homepage.urls')),
     path('updates/',include('update.urls')),
     path('schedule/', include('schedule.urls')),
+    path('select2/', include('django_select2.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

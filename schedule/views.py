@@ -44,7 +44,7 @@ class ScheduleFormView(TemplateView):
             schedule_post.year = form.cleaned_data['year']
             schedule_post.semester = form.cleaned_data['semester']
             schedule_post.course_name = form.cleaned_data['course_name']
-            schedule_post.modules_taken = form.cleaned_data['modules_taken']
+            schedule_post.modules_taken = str(form.cleaned_data['modules_taken'])
             schedule_post.desc = form.cleaned_data['desc']
             schedule_post.user = request.user
             schedule_post.save()
@@ -85,14 +85,16 @@ def schedule_detail(request,pk):
     comments = Comment.objects.filter(schedule_post=schedule_post).filter(parent=None)
 
     #Bookmarks
-    user = get_user_model().objects.get(id=request.user.id) 
-    if Bookmark.objects.filter(user=user).exists():
-        user_bookmark = Bookmark.objects.get(user=user)
+    if request.user.is_authenticated:
+        user = get_user_model().objects.get(id=request.user.id) 
+        if Bookmark.objects.filter(user=user).exists():
+            user_bookmark = Bookmark.objects.get(user=user)
+        else:
+            new_user_bookmark, created = Bookmark.objects.get_or_create(user=request.user)
+            user_bookmark = Bookmark.objects.get(user=user)
+        bookmarks = user_bookmark.bookmarks.all()
     else:
-        new_user_bookmark, created = Bookmark.objects.get_or_create(user=request.user)
-        user_bookmark = Bookmark.objects.get(user=user)
-    bookmarks = user_bookmark.bookmarks.all()
-
+        bookmarks = None
     args = {
         'schedulepost': schedule_post,
         'comments': comments,
