@@ -1,10 +1,10 @@
 from django.views.generic import TemplateView, ListView
 from django.shortcuts import render, redirect, get_object_or_404
-
 from django.core.exceptions import PermissionDenied
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
+from django.db.models import Q
 
 from schedule.filters import SchedulePostFilter
 from schedule.forms import ScheduleForm
@@ -168,7 +168,7 @@ def remove_like_schedule(request,pk):
         messages.error(request, "You did not like this post yet!")
         return redirect('view_schedule', pk)
 
-def schedule_search(request):
+def schedule_filter(request):
     schedule_list = SchedulePost.objects.all().order_by('-created')
     schedule_filter = SchedulePostFilter(request.GET, queryset=schedule_list)
     return render(request, 'schedule/schedule_search.html', {'filter':schedule_filter })
@@ -205,3 +205,20 @@ def remove_bookmark(request,pk):
     else: 
         messages.error(request, "You have not added this post to your bookmarks yet!")
         return redirect('view_schedule', pk)
+
+
+def search(request):
+    template = 'homepage/schedule_search.html'
+    query = request.GET.get('q')
+
+    if query:
+     results = SchedulePost.objects.filter(Q(title__icontains=query) | Q(faculty__icontains=query) | Q(desc__icontains=query) | Q(course_name__icontains=query) | 
+                Q(modules_taken__icontains=query))
+    else:
+     results = SchedulePost.objects.all()
+   
+    args = {
+            'results': results, 
+        } 
+    
+    return render(request, template, args)

@@ -3,9 +3,13 @@
 {% block content %}
 
 <div class="container-fluid">
-    <button type="button" class="btn btn-primary btn-lg" style="float:right;"><a href="{% url 'schedule_search' %}" style="color:#f6f6f6"><i class="fas fa-search"></i> Search for specific schedule</a></button>
     <h1>Latest Schedules</h1>
-    <br>
+    <form method="GET" action="{% url 'schedule_search' %}" style="float:left;">
+        <input name="q" value="{{request.GET.q}}" placeholder="Quick search...">
+    </form>
+    <br><br>
+    <button type="button" class="btn btn-primary btn-lg" style="float:left;"><a href="{% url 'schedule_filter' %}" style="color:#f6f6f6"><i class="fas fa-search"></i> Set filters for specific schedules</a></button>
+    <br><br>
     {% for schedule_post in schedule_posts %}
         {% if forloop.first %} <div class="row"> {% endif %}
             <div class="col-sm-6">

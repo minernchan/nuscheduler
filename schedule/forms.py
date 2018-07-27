@@ -1,7 +1,8 @@
 from django import forms
 
 from multiselectfield import MultiSelectFormField
-from django_select2.forms import Select2MultipleWidget
+from django_select2.forms import Select2MultipleWidget, HeavySelect2MultipleWidget
+from pagedown.widgets import PagedownWidget
 
 from schedule.models import SchedulePost
 from schedule.choices import FACULTY_CHOICES, blank_choice_faculty, blank_choice_year, YEAR_CHOICES_SCHEDULE, blank_choice_semester, SEMESTER_CHOICES, MODULE_CHOICES
@@ -59,7 +60,7 @@ class ScheduleForm(forms.ModelForm):
     modules_taken = forms.MultipleChoiceField(choices=MODULE_CHOICES, 
         widget=Select2MultipleWidget(attrs={
                 'class':'form-control',
-                'style': 'width:300px; height:500px;',
+                'style': 'width:300px;',
                 'data-placeholder': 'Please enter your modules taken here...'
             }))
 

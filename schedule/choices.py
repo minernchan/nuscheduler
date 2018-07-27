@@ -74,6 +74,16 @@ blank_choice_semester = (('','Please select a semester...'),)
 
 
 def edit(item):
-    return tuple(tuple((str(choice), str(choice)) for choice in item))
+    return list(list((str(choice), str(choice)) for choice in item))
 
-MODULE_CHOICES = edit(requests.get('http://api.nusmods.com/2018-2019/1/moduleCodes.json').json())
+MODULE_CHOICES = edit(list(sorted(set(requests.get('http://api.nusmods.com/2014-2015/1/moduleCodes.json').json() + 
+                    requests.get('http://api.nusmods.com/2014-2015/2/moduleCodes.json').json() +
+                    requests.get('http://api.nusmods.com/2015-2016/1/moduleCodes.json').json() +
+                    requests.get('http://api.nusmods.com/2015-2016/2/moduleCodes.json').json() +
+                    requests.get('http://api.nusmods.com/2016-2017/1/moduleCodes.json').json() +
+                    requests.get('http://api.nusmods.com/2016-2017/2/moduleCodes.json').json() + 
+                    requests.get('http://api.nusmods.com/2017-2018/1/moduleCodes.json').json() +
+                    requests.get('http://api.nusmods.com/2017-2018/2/moduleCodes.json').json() +
+                    requests.get('http://api.nusmods.com/2018-2019/1/moduleCodes.json').json()
+                ))))
+

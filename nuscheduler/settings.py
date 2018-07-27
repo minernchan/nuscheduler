@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django_filters',
     'crispy_forms',
     'django_select2',
+    'pagedown',
 
     # local apps
     'accounts',
@@ -139,6 +140,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'nuscheduler/media')

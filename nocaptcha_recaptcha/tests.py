@@ -4,7 +4,8 @@ import json
 from django.forms import Form
 from django.test import TestCase
 
-import mock
+
+from unittest import mock
 
 from nocaptcha_recaptcha import fields, client
 
