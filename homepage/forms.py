@@ -1,8 +1,9 @@
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, AuthenticationForm, PasswordResetForm
 from nocaptcha_recaptcha.fields import NoReCaptchaField
 from django.core.exceptions import ValidationError
+from schedule.choices import FACULTY_CHOICES, blank_choice_faculty, YEAR_CHOICES, blank_choice_year
 
 class RegistrationForm(UserCreationForm):
     
@@ -29,25 +30,51 @@ class RegistrationForm(UserCreationForm):
             'style': 'width: 300px',
         }),
         required=True)
+    
+    faculty = forms.ChoiceField(choices= blank_choice_faculty + FACULTY_CHOICES,
+        widget=forms.Select( 
+            attrs={
+                'class':'form-control',
+                'style': 'width:300px',
+            }),
+        required=True)
+    
+    course_name = forms.CharField(widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+            'placeholder': 'Enter your course name...',
+            'style': 'width: 300px',
+        }),
+        required=True)
+
+    year = forms.ChoiceField(choices= blank_choice_year + YEAR_CHOICES,
+        widget=forms.Select( 
+            attrs={
+                'class':'form-control',
+                'style': 'width:300px',
+            }),
+        required=True)
+
     captcha = NoReCaptchaField()
 
     
 
     class Meta: #Metadata
-        model = User #Model that is used to submit the data
+        model = get_user_model() #Model that is used to submit the data
         fields = (
-            'username', 
+            'email',
             'first_name',
             'last_name',
-            'email',
             'password1',
             'password2',
+            'faculty',
+            'course_name',
+            'year',
         )
     
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        username = self.cleaned_data.get('username')
-        if email and User.objects.filter(email=email).exclude(username=username).exists():
+        if email and get_user_model().objects.filter(email=email).exists():
             raise forms.ValidationError('Email addresses must be unique.')
         return email
 
@@ -81,12 +108,38 @@ class EditProfileForm(UserChangeForm):
             'style':'width:300px',
         }), required=True)
 
+    faculty = forms.ChoiceField(choices= blank_choice_faculty + FACULTY_CHOICES,
+        widget=forms.Select( 
+            attrs={
+                'class':'form-control',
+                'style': 'width:300px',
+            }),
+        required=True)
+    
+    course_name = forms.CharField(widget=forms.TextInput(
+        attrs={
+            'class':'form-control',
+            'style': 'width: 300px',
+        }),
+        required=True)
+
+    year = forms.ChoiceField(choices= blank_choice_year + YEAR_CHOICES,
+        widget=forms.Select( 
+            attrs={
+                'class':'form-control',
+                'style': 'width:300px',
+            }),
+        required=True)
+
     class Meta:
-        model = User
+        model = get_user_model()
         fields = (
             'email',
             'first_name',
             'last_name',
+            'faculty',
+            'course_name',
+            'year',
             'password',
         )
         #exclude() if only want to exclude a few fields
@@ -97,7 +150,7 @@ class CustomAuthenticationForm(AuthenticationForm):
 class EmailValidationOnForgotPassword(PasswordResetForm):
     def clean_email(self):
         email = self.cleaned_data['email']
-        if not User.objects.filter(email__iexact=email, is_active=True).exists():
+        if not get_user_model().objects.filter(email__iexact=email, is_active=True).exists():
             raise ValidationError("There is no user registered with the specified email address!")
 
         return email 

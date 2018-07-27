@@ -3,14 +3,17 @@
 {% block content %}
 <div class="container-fluid">
     <h1>Profile Information</h1>
-    <p><b>Username:</b> {{ user }}</p>
     <p><b>First Name:</b> {{ user.first_name }}</p>
     <p><b>Last Name:</b> {{ user.last_name }} </p>
-    <p><b>Email Address:</b> {{ user.email }} </p>
-    <p><b>Date Joined:</b> {{ user.date_joined }} </p>
-    <button type="button" class="btn btn-primary"><a href="{% url 'view_uploaded_schedules' username=user.username %}" style="color:#f6f6f6">View Uploaded Schedules</a></button>
-
-    <button type="button" class="btn btn-primary"><a href="/profile/edit" style="color:#f6f6f6">Edit Information</a></button>
+    <p><b>Faculty:</b> {{ user.faculty }} </p>
+    <p><b>Course name:</b> {{ user.course_name }} </p>
+    <p><b>Year of Study:</b> {{ user.year }} </p>
+    <p><b>Date Joined:</b> {{ user.date_joined|date }} </p>
+    
+    <button type="button" class="btn btn-primary"><a href="{% url 'view_uploaded_schedules' id=user.id %}" style="color:#f6f6f6"><i class="far fa-calendar"></i> View Uploaded Schedules</a></button>
+    <button type="button" class="btn btn-primary"><a href="/profile/edit" style="color:#f6f6f6"><i class="far fa-edit"></i> Edit Information</a></button>
+    <button type="button" class="btn btn-primary"><a href="{% url 'view_bookmarked_schedules' %}" style="color:#f6f6f6"><i class="fas fa-bookmark"></i> View Bookmarked Schedules</a></button>
+    <br><br>
 
 </div>
 {% endblock %}

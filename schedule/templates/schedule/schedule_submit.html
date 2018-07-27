@@ -8,6 +8,12 @@
         {% csrf_token %}
         {{ form.title }}
         <br>
+        {{ form.faculty }}
+        <br>
+        {{ form.year }}
+        <br>
+        {{ form.semester }}
+        <br>
         {{ form.course_name }}
         <br>
         {{ form.modules_taken }}
@@ -16,7 +22,7 @@
         <br>
         {{ form.image }}
         <br>
-        <button type="submit">Submit</button>
+        <button class="btn btn-default" type="submit"><i class="fas fa-check"></i> Submit</button>
     </form>
 </div>
 {% endblock %}

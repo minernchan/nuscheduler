@@ -1,43 +1,102 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
-{% if messages %}
-<div class="alert alert-success" role="alert">
-    <p class="messages">
-        {% for message in messages %}
-        <h6{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h6>
-        {% endfor %}
-    </p>
-</div>
-{% endif %}
+    
+
 <div class="container-fluid">
     {% if user.is_authenticated and user == schedulepost.user %}
-        <button type="button" class="btn btn-primary"><a href="/schedule/edit-schedule/{{schedulepost.id}}" style="color:#f6f6f6">Edit Schedule</a></button>
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle float-right" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Options
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="/schedule/edit-schedule/{{schedulepost.id}}"><i class="far fa-edit"></i> Edit Schedule</a>
+                <a class="dropdown-item" href="/schedule/delete-schedule/{{schedulepost.id}}"><i class="fas fa-trash-alt"></i> Delete Schedule</a>
+            </div>
+        </div>
+        <h1 style="display:inline-block;">{{schedulepost.title}}</h1>
+    {% else %}
+        <h1>{{schedulepost.title}}</h1>
     {% endif %}
     <br>
     <br>
-    <h1>{{schedulepost.title}}</h1>
+    
     {% if schedulepost.image %}
-        <img src="{{ schedulepost.image.url }}" width="1000"> 
+        <img src="{{ schedulepost.image.url }}" class="img-fluid" style="max-width:90%"> 
         <br>
     {% endif %}
     <br>
-    <h4>Course: {{ schedulepost.course_name }}</h4>
+    <h5>Faculty: {{ schedulepost.faculty }}</h5>
     <br>
-    <h4>Modules Taken: {{ schedulepost.modules_taken }}</h4>
+    <h5>Course: {{ schedulepost.course_name }}</h5>
     <br>
-    <h4>Description:</h4>
+    <h5>Year: {{ schedulepost.year}}, Semester: {{ schedulepost.semester}}</h5>
+    <br>
+    <h5>Modules Taken: {{ schedulepost.modules_taken }}</h5>
+    <br>
+    <h5>Description:</h5>
     <p>{{ schedulepost.desc }}</p>
     <br>
-    <h6>Posted by <a href="{% url 'view_other_profile' username=schedulepost.user.username %}">{{ schedulepost.user.get_full_name }}</a> on {{ schedulepost.created }}</h6>    
-    <h6>Last edited by <a href="{% url 'view_other_profile' username=schedulepost.user.username %}"> {{ schedulepost.user.get_full_name }}</a> on {{ schedulepost.updated }}</h6>
+    <h6>Posted by <a href="{% url 'view_other_profile' id=schedulepost.user.id %}">{{ schedulepost.user.get_full_name }}</a> on {{ schedulepost.created }}</h6>    
+    <h6>Last edited by <a href="{% url 'view_other_profile' id=schedulepost.user.id %}"> {{ schedulepost.user.get_full_name }}</a> on {{ schedulepost.updated }}</h6>
     <br>
-    {% if user.is_authenticated and user == schedulepost.user %}
-        <button type="button" class="btn btn-danger"><a href="/schedule/delete-schedule/{{schedulepost.id}}" style="color:#f6f6f6">Delete Schedule</a></button>
+    <p><i class="far fa-thumbs-up"></i> {{ schedulepost.like.count }} </p>
+
+    {% if user.is_authenticated and request.user in schedulepost.like.all %}
+        <button class="btn btn-danger" type="button"><a href="{% url 'remove_like_schedule' pk=schedulepost.id %}" style="color:white"><i class="fas fa-thumbs-down"></i> Unlike</a></button>
+    {% elif user.is_authenticated %}
+        <button class="btn btn-primary" type="button"><a href="{% url 'like_schedule' pk=schedulepost.id %}" style="color:white"><i class="far fa-thumbs-up"></i> Like</a></button>
     {% endif %}
+    {% if user.is_authenticated and schedulepost in bookmarks %}
+        <button class="btn btn-danger" type="button"><a href="{% url 'remove_bookmark_schedule' pk=schedulepost.id %}" style="color:white"><i class="fas fa-times"></i> Remove Bookmark</a></button>
+    {% else %}
+        <button class="btn btn-primary" type="button"><a href="{% url 'add_bookmark_schedule' pk=schedulepost.id %}" style="color:white"><i class="fas fa-bookmark"></i> Bookmark</a></button>
+    {% endif %}
+    <br><br>
+
+    <h3><i class="fas fa-comments"></i> Comments</h3>
+    <form method="POST">
+        {% csrf_token %}
+        {{ comment_form|crispy }}
+        <button type="submit" class="btn btn-default">Comment</button>
+    </form>
+    <hr>
+    {% for comment in comments %}
+    <blockquote class="blockquote">
+        <p class="mb-0">{{ comment.content }}</p>
+        <footer class="blockquote-footer"><small>Posted by <a href="{% url 'view_other_profile' id=comment.user.id%}"> {{comment.user.get_full_name }}</a> | 
+            {{comment.timestamp|timesince}} ago on {{comment.timestamp}} |  {% if comment.children.count > 1 %} {{ comment.children.count }} Replies |
+            {% elif comment.children.count > 0 %} {{ comment.children.count }} Reply | {% endif %} 
+            <a data-toggle="collapse" href="#collapse{{ comment.id }}" role="button" aria-expanded="false" aria-controls="collapse{{ comment.id }}"><i class="fas fa-reply"></i> Reply</a></small>
+
+        </footer>
+
+                {% for child_comment in comment.children %}
+                <blockquote class="blockquote" style="margin-left:30px;">
+                    <p class="mb-0">{{ child_comment.content }}</p>
+                    <footer class="blockquote-footer"><small>Posted by <a href="{% url 'view_other_profile' id=comment.user.id%}"> {{child_comment.user.get_full_name }}</a> | 
+                    {{child_comment.timestamp|timesince}} ago on {{child_comment.timestamp}}</small></footer>
+                </blockquote> 
+                {% endfor %}
+        
+        <div class="collapse" id='collapse{{ comment.id }}'>
+            <div class="card card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ comment_form|crispy }} 
+                    <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                    <button type="submit" class="btn btn-default">Reply</button>
+                </form>
+            </div>  
+        </div>
+
+    </blockquote>  
+    <hr>
+    {% endfor %}
+
 </div>
 <br>
+<br>
+
 {% endblock %}
-
-
-    

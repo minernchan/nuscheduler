@@ -5,7 +5,15 @@
 	<title>NUScheduler</title>
 	<meta charset="utf-8" />
 	{% load staticfiles %}
+	<!-- Bootstrap core CSS -->
 	<link rel="stylesheet" href="{% static 'homepage/css/bootstrap.min.css' %}" type = "text/css"/>
+	
+	<!-- FontAwesome CSS-->
+	<link rel="stylesheet" href="{% static 'homepage/css/all.css' %}"/>
+	
+	<!-- Custom styles for this template -->
+    <link href="{% static 'homepage/css/simple-sidebar.css' %}" rel="stylesheet">
+	
 	<meta name="viewport" content = "width=device-width, initial-scale=1.0">
 	<style type="text/css">
 		html,
@@ -13,70 +21,87 @@
 		  height:100%
 		}
 	</style>
-	<script src='https://www.google.com/recaptcha/api.js'></script>
+
 </head>
 
 <body class="body" style="background-color:#f6f6f6">
 	<!-- Navbar -->
-	<nav class="navbar navbar-expand-md navbar-dark bg-dark">
-    <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+	<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+		<div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
 			<a class="navbar-brand" href="/">
 				<img src="{% static 'homepage/img/NUScheduler-logo.png' %}" class="responsive-img" width="150" height="60" alt="NUScheduler Logo">
 			</a>
-	</div>
-	{% if user.is_authenticated %}
-    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-        <ul class="navbar-nav ml-auto">
-			<li class="nav-item"><button type="button" class="btn btn-danger"><a href="/schedule/submit/" style="color:#f6f6f6">Share your schedule</a></button></li>
-			<li class="nav-item"><a class="nav-link" href="{% url 'view_profile' %}">Profile</a></li>
-			<li class="nav-item"><a class="nav-link" href="/logout/">Logout</a></li>
-        </ul>
-	</div>
-	
-	{% else %} 
-	
+			<div class="navbar-nav">
+				<a href="/" class="nav-item nav-link"><i class="fas fa-home fa-fw" style="color:white"></i> Home</a></li>
+				<a href="/schedule/" class="nav-link"><i class="far fa-calendar fa-fw" style="color:white"></i> Schedules</a></li>
+				<a href="/updates/" class="nav-link"><i class="fas fa-wrench" style="color:white"></i> Updates</a></li>
+			</div>
+			
+		
+		</div>
+		{% if user.is_authenticated %}
+		<div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item"><button type="button" class="btn btn-danger"><a href="/schedule/submit/" style="color:#f6f6f6"><i class="fas fa-share"></i> Share your schedule</a></button></li>
+				<li class="nav-item"><a class="nav-link" href="{% url 'view_profile' %}"><i class="fas fa-user" style="color:white"></i> Profile</a></li>
+				<li class="nav-item"><a class="nav-link" href="/logout/"><i class="fas fa-sign-out-alt" style="color:white"></i> Logout</a></li>
+			</ul>
+		</div>
+		
+		{% else %} 
+		
 
-    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-		<ul class="navbar-nav ml-auto">
-			<li class="nav-item"><a class="nav-link" href="/login/">Login</a></li>
-			<li class="nav-item"><a class="nav-link" href="/register/">Register</a></li>
-		</ul>
-	</div>
-	{% endif %}
+		<div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item"><a class="nav-link" href="/login/"><i class="fas fa-sign-in-alt" style="color:white"></i> Login</a></li>
+				<li class="nav-item"><a class="nav-link" href="/register/"><i class="fas fa-user-plus" style="color:white"></i> Register</a></li>
+			</ul>
+		</div>
+		{% endif %}
+
+		<form method="GET" action="{% url 'search' %}">
+			<input name="q" value="{{request.GET.q}}" placeholder="Search..">
+			<button class="btn btn-success" type="submit">
+					Search
+			</button>
+		</form>
+
 	</nav>
 
 
-	<div class="container-fluid" style="min-height:95%;">
-		<!--Sidebar-->
+	<div class="container-fluid">
 		<div class="row">
-			<div class="col-1 px-1 bg-light position-fixed" id="sticky-sidebar">
-		
-				<div class="well bs-sidebar" id="sidebar" style="background-color:#fff">
-					<ul class="nav nav-tabs flex-column">
-						<li><a href="/">Home</a></li>
-						<li><a href="/schedule/">Schedules</a></li>
-						<li><a href="/updates/">Updates</a></li>
-					</ul>
-				</div>
-			</div>
+			
+			<div style="float:left; width:400px; height:100%;"></div>
 
 			<!--Content-->
-			<div class="col offset-1">
+			<div class="col offset-0" style="margin-top:80px;">
 				<div class="container-fluid">
 					<br><br>
-						{% block content %}
-						{% endblock %}
+					{% if messages %}
+						{% include 'partials/messages.html' %}
+					{% endif %}
+
+					{% block content %}
+					{% endblock %}
 				</div>
 			</div>
+
+			<div style="float:right; width:400px; height:100%;"></div>
 		</div>
 	</div>
-
-	<footer>
-		<div class="container-fluid" style='margin-left:15px'>
-			<p><a href="#" target="blank">Contact</a> | <a href="#" target="blank">Twitter</a> | <a href="#" target="blank">Facebook</a></p>
-		</div>
-	</footer>	
 	
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+	<script src="{% static 'homepage/js/bootstrap.min.js' %}"></script>
+	
+	<!-- FontAwesome SVG JS -->
+	<script defer src="{% static 'homepage/js/all.js' %}"></script>
+
+	<script src='https://www.google.com/recaptcha/api.js'></script>
+
 </body>
 
 </html>
+
