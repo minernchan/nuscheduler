@@ -39,4 +39,12 @@ class SchedulePostTests(TestCase):
             response.context['schedule_posts'],['<SchedulePost: Correct Post>']
         )
     
-    
+
+    def test_view_user_profile(self):
+        post = self.create_schedule_post()
+
+        response = self.client.get(reverse('view_uploaded_schedules', kwargs={'id':post.user_id}))
+
+        self.assertQuerysetEqual(
+            response.context['object_list'],['<SchedulePost: Correct Post>']
+        )
