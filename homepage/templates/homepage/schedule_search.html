@@ -12,7 +12,9 @@
             <hr>
             <h3><a href="/schedule/{{schedule_post.id}}">{{ schedule_post.title }}</a></h3> 
             {% if schedule_post.image %}
-                <img src="{{ schedule_post.image.url }}" class="img-fluid" style="max-width:90%"> 
+            <a href="{% url 'view_schedule' pk=schedule_post.id %}">
+                <img src="{{ schedule_post.image.url }}" class="img-fluid" style="max-width:90%">
+            </a> 
             {% endif %}
             <h6>Posted by <a href="{% url 'view_other_profile' id=schedule_post.user.id %}">{{ schedule_post.user.get_full_name }}</a> on {{ schedule_post.created }}</h6>    
             <h6>Last edited by <a href="{% url 'view_other_profile' id=schedule_post.user.id %}"> {{ schedule_post.user.get_full_name }}</a> on {{ schedule_post.updated }}</h6>
